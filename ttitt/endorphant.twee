@@ -1,0 +1,34 @@
+::endorphant-start [start]
+//[[back to tildetwine start|Start]]//
+<<set $items['gold'] to false>> <<set $items['crowbar'] to false>>
+
+the sky is a slate grey, fading to white along the edges. when you lean your head way back, you feel the cooling effect from the rest of the universe pressing up against you.
+
+it's hard to tell your body from that which is not your body sometimes.
+
+[[...|endorphant-bench]]
+
+::endorphant-bench [inv place]
+you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not yet begun to snow.
+
+[[the subway station|endorphant-station]] might be a warmer place.
+
+------
+
+:: endorphant-xbench [desc]
+
+''the bench''
+
+//its bent iron lines are black and cold against the backs of your legs//
+
+<<if not $items['transit card'] is true>>on the dirty concrete under the bench, you find a [[transit card|transit card-itemDescription]].<<endif>>
+
+[[close|endorphant-bench]]
+
+:: endorphant-station [inv place]
+
+it smells of underground air and trapped body heat. 
+
+maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
+
+------
