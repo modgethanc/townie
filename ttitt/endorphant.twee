@@ -1,21 +1,26 @@
+:: endorphant-startDescription 
+it's been a long day. most days are long, though. the nights get shorter every time the moon passes overhead.
+
+for now, you can [[tolerate the sky|endorphant-start]].
+
 ::endorphant-start [start]
-<<if visited("krowbar-start") eq 0>> <<set $items['gold'] to false>><<set $items['crowbar'] to false>><<endif>>
 
-the sky is a slate grey, fading to white along the edges. when you lean your head way [[back|Start][$items['crowbar']=true;$items['gold']=0]], you feel the cooling effect from the rest of the universe pressing up against you.
+<<if not visited('endorphant-bench')>>the sky is a slate grey, fading to white along the edges. when you lean your head way [[back|Start]], you feel the cooling effect from the rest of the universe pressing up against you.
 
-it's hard to tell your body from that which is not your body sometimes.
+it's hard to tell your body from that which is not your body sometimes
 
 [[...|endorphant-bench]]
+<<else>><<endorphant-bench>><<endif>>
 
-::endorphant-bench [inv place]
-
-//[[back to tildetwine start|Start][$items['crowbar']=true; $items['gold']=0]]//
+::endorphant-bench [place]
 
 you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not yet begun to snow.
 
 [[the subway station|endorphant-station]] might be a warmer place.
 
-------
+from this place of safety, you always have the option to [[escape|Start]].
+
+------ <<display Inventory>>
 
 :: endorphant-xbench [desc]
 
