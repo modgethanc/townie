@@ -1,0 +1,15 @@
+:: ChuckLister [script]
+
+macros['ChuckList'] = { handler: function(place, macroName, params, parser) {
+  var msg = "";
+  var items = state.history[0].variables.items;
+
+  for (var name in items){
+    if (items[name] == true ) {
+      msg += "[[" + name + "|passage()][$items['" + name + "'] = false]]" + ", ";
+      }
+   };
+
+   new Wikifier(place, msg.slice(0,-2));
+  }
+}

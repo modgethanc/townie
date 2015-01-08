@@ -16,7 +16,7 @@ it's hard to tell your body from that which is not your body sometimes
 
 you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not yet begun to snow.
 
-[[the subway station|endorphant-station]] might be a warmer place.
+[[the subway station|endorphant-station]] might be a warmer place, but you are also not far from [[the river's edge|endorphant-river]].
 
 from this place of safety, you always have the option to [[escape|Start]].
 
@@ -39,3 +39,29 @@ it smells of underground air and trapped body heat.
 maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 
 ------
+
+:: endorphant-river [inv place]
+
+thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
+
+the [[place where you like to sit|endorphant-bench]] is still visible.
+
+------
+
+:: endorphant-xhole [desc]
+
+''the hole in the ice''
+
+//a jagged gash where the dark, cold river shows through.//
+
+this would be a fine place to get rid of anything you don't want to keep.
+
+
+<<endorphant-drop>>
+
+[[close|endorphant-river]]
+
+:: endorphant-drop [display]
+
+//click on an item name to drop it through the ice. //
+<<ChuckList>>
