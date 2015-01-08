@@ -13,3 +13,10 @@ macros['ChuckList'] = { handler: function(place, macroName, params, parser) {
    new Wikifier(place, msg.slice(0,-2));
   }
 }
+
+::css [stylesheet]
+
+  body, #sidebar, #sidebar #title {
+    background-color:pink;
+    color: black;
+  }
