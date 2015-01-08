@@ -1,4 +1,5 @@
 :: transit card-itemDescription [item]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
 ''a transit card''
 
 //scuffed hard plastic, with an embedded chip that will let you ride the trains.//

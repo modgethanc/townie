@@ -4,6 +4,7 @@ it's been a long day. most days are long, though. the nights get shorter every t
 for now, you can [[tolerate the sky|endorphant-start]].
 
 ::endorphant-start [start]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:white; }</style></html>
 
 <<if not visited('endorphant-bench')>>the sky is a slate grey, fading to white along the edges. when you lean your head way [[back|Start]], you feel the cooling effect from the rest of the universe pressing up against you.
 
@@ -13,6 +14,7 @@ it's hard to tell your body from that which is not your body sometimes
 <<else>><<endorphant-bench>><<endif>>
 
 ::endorphant-bench [place]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
 
 you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not yet begun to snow.
 
@@ -23,6 +25,7 @@ from this place of safety, you always have the option to [[escape|Start]].
 ------ <<display Inventory>>
 
 :: endorphant-xbench [desc]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
 
 ''the bench''
 
@@ -33,6 +36,7 @@ from this place of safety, you always have the option to [[escape|Start]].
 [[close|endorphant-bench]]
 
 :: endorphant-station [inv place]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
 
 it smells of underground air and trapped body heat. 
 
@@ -41,6 +45,7 @@ maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 ------
 
 :: endorphant-river [inv place]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
 
 thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
 
@@ -49,6 +54,7 @@ the [[place where you like to sit|endorphant-bench]] is still visible.
 ------
 
 :: endorphant-xhole [desc]
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
 
 ''the hole in the ice''
 

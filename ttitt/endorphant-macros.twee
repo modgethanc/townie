@@ -14,9 +14,10 @@ macros['ChuckList'] = { handler: function(place, macroName, params, parser) {
   }
 }
 
-::css [stylesheet]
+:: endorphant-css [stylesheet]
 
   body, #sidebar, #sidebar #title {
     background-color:pink;
     color: black;
   }
+
