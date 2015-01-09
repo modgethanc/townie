@@ -25,7 +25,7 @@ from this place of safety, you always have the option to [[escape|Start]].
 ------ <<display Inventory>>
 
 :: endorphant-xbench [desc]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
 
 ''the bench''
 
@@ -62,12 +62,10 @@ the [[place where you like to sit|endorphant-bench]] is still visible.
 
 this would be a fine place to get rid of anything you don't want to keep.
 
-
 <<endorphant-drop>>
 
 [[close|endorphant-river]]
 
 :: endorphant-drop [display]
-
-//click on an item name to drop it through the ice. //
+<<IceDropText>>
 <<ChuckList>>

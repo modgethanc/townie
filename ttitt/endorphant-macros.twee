@@ -1,4 +1,4 @@
-:: ChuckLister [script]
+:: ItemDropping [script]
 
 macros['ChuckList'] = { handler: function(place, macroName, params, parser) {
   var msg = "";
@@ -14,10 +14,23 @@ macros['ChuckList'] = { handler: function(place, macroName, params, parser) {
   }
 }
 
+macros['IceDropText'] = { handler: function(place, macroName, params, parser) {
+    var msg = "";
+    var items = state.history[0].variables.items;
+
+    for (var name in items) {
+      if (items[name] == true) {
+        msg = "//click on an item to drop it through the ice.//";
+      } 
+    }
+
+    new Wikifier(place, msg);
+  }
+}
+
 :: endorphant-css [stylesheet]
 
   body, #sidebar, #sidebar #title {
     background-color:pink;
     color: black;
   }
-
