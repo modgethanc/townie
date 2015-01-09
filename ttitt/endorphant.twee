@@ -25,7 +25,7 @@ from this place of safety, you always have the option to [[escape|Start]].
 ------ <<display Inventory>>
 
 :: endorphant-xbench [desc]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
+<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
 
 ''the bench''
 
