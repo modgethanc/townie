@@ -1,5 +1,4 @@
-:: transit card-itemDescription [item]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:white; } .passage { background-color: aliceblue; border: 1px solid black; padding: 8px;} </style></html>
+:: transit card-itemDescription [item endoitem]
 ''a transit card''
 
 //scuffed hard plastic, with an embedded chip that will let you ride the trains.//

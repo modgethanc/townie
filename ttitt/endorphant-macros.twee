@@ -30,6 +30,27 @@ macros['IceDropText'] = { handler: function(place, macroName, params, parser) {
 
 :: Stylize [script]
 
+var invStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:white; } .passage { background-color: aliceblue; border: 1px solid black; padding: 8px;} </style></html>";
+
+var placeStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>";
+
+var descStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>";
+
+postrender.stylize = function(place) {
+
+    if (~this.tags.indexOf("item")) {
+      new Wikifier(place, invStyle);
+    }
+
+    if (~this.tags.indexOf("place")) {
+      new Wikifier(place, placeStyle);
+    }
+
+    if (~this.tags.indexOf("desc")) {
+      new Wikifier(place, descStyle);
+    }
+}
+
 :: endorphant-css [stylesheet]
 
   body, #sidebar, #sidebar #title {

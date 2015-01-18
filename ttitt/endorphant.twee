@@ -14,7 +14,6 @@ it's hard to tell your body from that which is not your body sometimes
 <<else>><<endorphant-bench>><<endif>>
 
 ::endorphant-bench [place]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
 
 you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not yet begun to snow.
 
@@ -25,8 +24,6 @@ from this place of safety, you always have the option to [[escape|Start]].
 ------ <<display Inventory>>
 
 :: endorphant-xbench [desc]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
-
 ''the bench''
 
 //its bent iron lines are black and cold against the backs of your legs//
@@ -36,8 +33,6 @@ from this place of safety, you always have the option to [[escape|Start]].
 [[close|endorphant-bench]]
 
 :: endorphant-station [inv place]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
-
 it smells of underground air and trapped body heat. 
 
 maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
@@ -45,8 +40,6 @@ maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 ------
 
 :: endorphant-river [inv place]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>
-
 thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
 
 the [[place where you like to sit|endorphant-bench]] is still visible.
@@ -54,8 +47,6 @@ the [[place where you like to sit|endorphant-bench]] is still visible.
 ------
 
 :: endorphant-xhole [desc]
-<html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:darkgray; }</style></html>
-
 ''the hole in the ice''
 
 //a jagged gash where the dark, cold river shows through.//
