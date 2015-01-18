@@ -45,12 +45,9 @@ maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 :: endorphant-xturnstile [desc]
 ''a turnstile''
 
-<<if $swiped == false>>
-<<endorphant-turnstilemsg>>
-<<else>>
-<html><font color="green"><b>CARD VALID</b></font></html>
->[[proceed|endorphant-platform]]
-<<endif>>
+<<if $swiped == false>> <<endorphant-turnstilemsg>> <<else>> <html><font color="green"><b>CARD VALID</b></font></html> 
+
+>[[proceed|endorphant-platform]] <<endif>>
 
 [[close|endorphant-station]]
 
