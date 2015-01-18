@@ -28,6 +28,8 @@ macros['IceDropText'] = { handler: function(place, macroName, params, parser) {
   }
 }
 
+:: Stylize [script]
+
 :: endorphant-css [stylesheet]
 
   body, #sidebar, #sidebar #title {
