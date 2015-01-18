@@ -3,4 +3,4 @@
 
 //scuffed hard plastic, with an embedded chip that will let you ride the trains.//
 
-<<if not $items['transit card'] is true>>::[[take it|previous()][$items['transit card'] = true]]<<endif>> <br>
+<<if not $items['transit card'] is true>>>[[take it|previous()][$items['transit card'] = true]]<<endif>> <br>

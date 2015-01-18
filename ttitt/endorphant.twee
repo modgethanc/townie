@@ -33,11 +33,47 @@ from this place of safety, you always have the option to [[escape|Start]].
 [[close|endorphant-bench]]
 
 :: endorphant-station [inv place]
-it smells of underground air and trapped body heat. 
+<<nobr>>
+<<set $swiped = false>>
+<<endnobr>>
+it smells of underground air and trapped body heat. a [[turnstile|endorphant-xturnstile]] blocks your way further down.
 
 maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 
 ------
+
+:: endorphant-xturnstile [desc]
+''a turnstile''
+
+<<if $swiped == false>>
+<<endorphant-turnstilemsg>>
+<<else>>
+<html><font color="green"><b>CARD VALID</b></font></html>
+>[[proceed|endorphant-platform]]
+<<endif>>
+
+[[close|endorphant-station]]
+
+:: endorphant-turnstilemsg
+metal prongs locked in place<<if $items['transit card'] is true>>, until you [[swipe your card|passage()][$swiped=true]]<<endif>>.
+
+:: endorphant-platform [inv place]
+
+the platform is empty, but not still. the air is warm, but smothering.
+
+there are no trains coming.
+
+there is a [[map|endorphant-subwaymap]] on the wall.
+
+you can always go [[back towards the sky|endorphant-station]].
+
+------
+
+:: endorphant-subwaymap [desc]
+
+//it's blank...//
+
+[[close|endorphant-platform]]
 
 :: endorphant-river [inv place]
 thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
