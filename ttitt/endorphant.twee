@@ -1,7 +1,8 @@
-:: endorphant-startDescription 
-it's been a long day. most days are long, though. the nights get shorter every time the moon passes overhead.
+:: endorphant-startDescription  [notravel]
+<<if $traveling>>the train is about to arrive at [[the platform|endorphant-platform][$traveling=false]]. please gather all your belongings and mind the gap.
+<<else>>it's been a long day. most days are long, though. the nights get shorter every time the moon passes overhead.
 
-for now, you can [[tolerate the sky|endorphant-start]].
+for now, you can [[tolerate the sky|endorphant-start]].<<endif>>
 
 ::endorphant-start [start]
 <html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:white; }</style></html>
@@ -14,7 +15,6 @@ it's hard to tell your body from that which is not your body sometimes
 <<else>><<endorphant-bench>><<endif>>
 
 ::endorphant-bench [place]
-
 you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not yet begun to snow.
 
 [[the subway station|endorphant-station]] might be a warmer place, but you are also not far from [[the river's edge|endorphant-river]].
@@ -27,16 +27,14 @@ from this place of safety, you always have the option to [[escape|Start]].
 ''the bench''
 
 //its bent iron lines are black and cold against the backs of your legs//
-
-<<if not $items['transit card'] is true>>on the dirty concrete under the bench, you find a [[transit card|transit card-itemDescription]].<<endif>>
+<<if not $items['transit card'] is true>><br> on the dirty concrete under the bench, you find a [[transit card|transit card-itemDescription]].<<endif>>
 
 [[close|endorphant-bench]]
 
 :: endorphant-station [inv place]
 <<nobr>>
 <<set $swiped = false>>
-<<endnobr>>
-it smells of underground air and trapped body heat. a [[turnstile|endorphant-xturnstile]] blocks your way further down.
+<<endnobr>> it smells of underground air and trapped body heat. a [[turnstile|endorphant-xturnstile]] blocks your way further down.
 
 maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 
@@ -54,23 +52,22 @@ maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 :: endorphant-turnstilemsg
 metal prongs locked in place<<if $items['transit card'] is true>>, until you [[swipe your card|passage()][$swiped=true]]<<endif>>.
 
-:: endorphant-platform [inv place]
+:: endorphant-platform [inv place notravel]
+<<set $traveling = false>> the platform is empty, but not still. the air is warm, but smothering.
 
-the platform is empty, but not still. the air is warm, but smothering.
-
-there are no trains coming.
-
-there is a [[map|endorphant-subwaymap]] on the wall.
+the train is [[arriving|endorphant-train][$traveling=true]].
 
 you can always go [[back towards the sky|endorphant-station]].
 
 ------
 
-:: endorphant-subwaymap [desc]
+:: endorphant-subwaymap [desc notravel]
+<<Start>>
 
-//it's blank...//
+[[close|endorphant-platform][$traveling=false]]
 
-[[close|endorphant-platform]]
+:: endorphant-train 
+<<Start>>
 
 :: endorphant-river [inv place]
 thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
@@ -91,5 +88,7 @@ this would be a fine place to get rid of anything you don't want to keep.
 [[close|endorphant-river]]
 
 :: endorphant-drop [display]
+
 <<IceDropText>>
 <<ChuckList>>
+
