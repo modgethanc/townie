@@ -27,7 +27,7 @@ you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not y
 //its bent iron lines are black and cold against the backs of your legs//
 <<if not $items['transit card'] is true>><br> on the dirty concrete under the bench, you find a [[transit card|transit card-itemDescription]].<<endif>>
 
-[[close|endorphant-bench]]
+<div class="button">[[back|endorphant-bench]]</div>
 
 :: endorphant-station [inv place]
 <<nobr>>
@@ -43,9 +43,9 @@ maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 
 <<if $swiped == false>> <<endorphant-turnstilemsg>> <<else>> <html><font color="green"><b>CARD VALID</b></font></html> 
 
->[[proceed|endorphant-platform]] <<endif>>
+<div class="action">[[proceed|endorphant-platform]]</div><<endif>>
 
-[[close|endorphant-station]]
+<div class="button">[[back|endorphant-station]]</div>
 
 :: endorphant-turnstilemsg
 metal prongs locked in place<<if $items['transit card'] is true>>, until you [[swipe your card|passage()][$swiped=true]]<<endif>>.
@@ -85,7 +85,7 @@ this would be a fine place to get rid of anything you don't want to keep.
 
 <<endorphant-drop>>
 
-[[close|endorphant-river]]
+<div class="button">[[back|endorphant-river]]</div>
 
 :: endorphant-drop [display]
 

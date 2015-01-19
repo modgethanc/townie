@@ -58,12 +58,26 @@ postrender.stylize = function(place) {
     color: black;
   }
 
+  .action a {
+    border: 1px solid black;
+    padding: 2px;
+    background-color: white;
+    color: black;
+  }
+
+  .button a {
+    border: 1px solid black;
+    padding: 2px;
+    background-color: lightgray;
+    color: black;
+  }
+
 
 :: TransdimensionalSubway [script]
 
 postrender.detrain = function(place) {
   var traveling = state.history[0].variables.traveling;
-  var msg = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color: black; color: white;} #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(255,255,255,0.5);} </style></html> <div style=\"position:fixed; float:left; top: -.5em; width: 60%; text-align: left; padding: 2px; border: 1px solid black; color: black; background: white;\"> <i>you are riding the transdimensional endorphant subway.<br>images flash through the windows as if a distant memory.</i><div style=\"text-align: right; float: right; top: -1em;\">>[[disembark|endorphant-platform][$traveling=false]]</div></div>";
+  var msg = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color: black; color: white;} #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(255,255,255,0.5);} </style></html> <div style=\"position:fixed; float:left; top: -.5em; width: 60%; text-align: left; padding: 2px; border: 1px solid black; color: black; background: white;\"> <i>you are riding the transdimensional endorphant subway.<br>images flash through the windows as if a distant memory.</i><div style=\"text-align: right; float: right; top: -1em;\" class=\"action\">[[disembark|endorphant-platform][$traveling=false]]</div></div>";
 
   if((traveling) && (this != "Start") && (this.tags.indexOf("notravel"))) {
     new Wikifier(place, msg);
