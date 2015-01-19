@@ -61,10 +61,10 @@ postrender.stylize = function(place) {
 
 :: TransdimensionalSubway [script]
 
-prerender.detrain = function(place) {
+postrender.detrain = function(place) {
   var traveling = state.history[0].variables.traveling;
-  var msg = "<html> <style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color: black; color: white;} </style></html> <div style=\"padding: 2px; border: 1px solid black; color: black; background: white;\"><i>you are riding the transdimensional endorphant subway.</i> [[disembark|endorphant-platform][$traveling=false]]</div><br><br>";
-  var test = this;
+  var msg = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color: black; color: white;}</style></html> <div style=\"position:fixed; float:left; top: 0em; padding: 2px; border: 1px solid black; color: black; background: white;\"> <i>you are riding the transdimensional endorphant subway.</i> current stop: "+this+" >[[disembark|endorphant-platform][$traveling=false]]</div><br><br>";
+
   if((traveling) && (this != "Start") && (this.tags.indexOf("notravel")) && (this.tags.indexOf("item"))) {
     new Wikifier(place, msg);
   }

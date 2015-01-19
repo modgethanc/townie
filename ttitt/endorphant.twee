@@ -19,8 +19,6 @@ you are sitting on a [[bench|endorphant-xbench]] in a tiny parklet. it has not y
 
 [[the subway station|endorphant-station]] might be a warmer place, but you are also not far from [[the river's edge|endorphant-river]].
 
-from this place of safety, you always have the option to [[escape|Start]].
-
 ------ <<display Inventory>>
 
 :: endorphant-xbench [desc]
@@ -60,11 +58,6 @@ the train is [[arriving|endorphant-train][$traveling=true]].
 you can always go [[back towards the sky|endorphant-station]].
 
 ------
-
-:: endorphant-subwaymap [desc notravel]
-<<Start>>
-
-[[close|endorphant-platform][$traveling=false]]
 
 :: endorphant-train 
 <<Start>>
