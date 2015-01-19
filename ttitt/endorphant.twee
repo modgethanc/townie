@@ -51,11 +51,9 @@ maybe it's better if you go back to [[sitting on the bench|endorphant-bench]].
 metal prongs locked in place<<if $items['transit card'] is true>>, until you [[swipe your card|passage()][$swiped=true]]<<endif>>.
 
 :: endorphant-platform [inv place notravel]
-<<set $traveling = false>> the platform is empty, but not still. the air is warm, but smothering.
+<<set $items['transit card'] = true>><<set $traveling = false>> the platform is empty, but not still. the air is warm, but smothering.
 
-the train is [[arriving|endorphant-train][$traveling=true]].
-
-<<endorphant-commuters>>
+the train is [[arriving|endorphant-train][$traveling=true]].  <<endorphant-commuters>>
 
 you can always go [[back towards the sky|endorphant-station]].
 
@@ -65,7 +63,11 @@ you can always go [[back towards the sky|endorphant-station]].
 <<Start>>
 
 ::endorphant-commuters [display]
-<<if visited("papa-start") gte 1>>a grizzled-looking old man stands at the other end of the platform, avoiding your gaze.<<endif>>
+<<nobr>>
+<<if visited("papa-start") gte 1>>
+<br><br>a grizzled-looking old man stands at the other end of the platform, avoiding your gaze.
+<<endif>>
+<<endnobr>>
 
 :: endorphant-river [inv place]
 thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
