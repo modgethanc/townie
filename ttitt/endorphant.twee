@@ -55,12 +55,17 @@ metal prongs locked in place<<if $items['transit card'] is true>>, until you [[s
 
 the train is [[arriving|endorphant-train][$traveling=true]].
 
+<<endorphant-commuters>>
+
 you can always go [[back towards the sky|endorphant-station]].
 
 ------
 
 :: endorphant-train 
 <<Start>>
+
+::endorphant-commuters [display]
+<<if visited("papa-start") gte 1>>a grizzled-looking old man stands at the other end of the platform, avoiding your gaze.<<endif>>
 
 :: endorphant-river [inv place]
 thick ice over the river stands witness to an endless winter. someone has punched [[a hole|endorphant-xhole]] through the surface.
@@ -84,4 +89,3 @@ this would be a fine place to get rid of anything you don't want to keep.
 
 <<IceDropText>>
 <<ChuckList>>
-

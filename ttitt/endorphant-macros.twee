@@ -30,7 +30,7 @@ macros['IceDropText'] = { handler: function(place, macroName, params, parser) {
 
 :: Stylize [script]
 
-var invStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:white;} #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(0,0,0,0.5);} .passage { background-color: aliceblue; border: 1px solid black; padding: 8px;} </style></html>";
+var invStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:white;} #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(0,0,0,0.5);} .passage { background-color: aliceblue; border: 1px solid black; padding: 8px; color:black;} </style></html>";
 
 var placeStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>";
 
@@ -63,9 +63,11 @@ postrender.stylize = function(place) {
 
 postrender.detrain = function(place) {
   var traveling = state.history[0].variables.traveling;
-  var msg = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color: black; color: white;}</style></html> <div style=\"position:fixed; float:left; top: 0em; padding: 2px; border: 1px solid black; color: black; background: white;\"> <i>you are riding the transdimensional endorphant subway.</i> current stop: "+this+" >[[disembark|endorphant-platform][$traveling=false]]</div><br><br>";
+  var msg = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color: black; color: white;} #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(255,255,255,0.5);} </style></html> <div style=\"position:fixed; float:left; top: -.5em; width: 60%; text-align: left; padding: 2px; border: 1px solid black; color: black; background: white;\"> <i>you are riding the transdimensional endorphant subway.<br>images flash through the windows as if a distant memory.</i><div style=\"text-align: right; float: right; top: -1em;\">>[[disembark|endorphant-platform][$traveling=false]]</div></div>";
 
-  if((traveling) && (this != "Start") && (this.tags.indexOf("notravel")) && (this.tags.indexOf("item"))) {
+  if((traveling) && (this != "Start") && (this.tags.indexOf("notravel"))) {
     new Wikifier(place, msg);
   }
 }
+
+:: CommuterScripts [script]
