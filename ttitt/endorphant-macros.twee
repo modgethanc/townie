@@ -30,7 +30,7 @@ macros['IceDropText'] = { handler: function(place, macroName, params, parser) {
 
 :: Stylize [script]
 
-var invStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:white;} #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(0,0,0,0.5);} .passage { background-color: aliceblue; border: 1px solid black; padding: 8px; color:black;} </style></html>";
+var invStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { } #sidebar #title, #sidebar #storyElement, #sidebar li a, #sidebar, #sidebar #title a, #sidebar #credits {  color: transparent; text-shadow: 0 0 5px rgba(0,0,0,0.5);} .passage { background-color: aliceblue; border: 1px solid black; padding: 8px; color:black;} </style></html>";
 
 var placeStyle = "<html><style type=\"text/css\"> body, #sidebar, #sidebar #title { background-color:lightgray; }</style></html>";
 
