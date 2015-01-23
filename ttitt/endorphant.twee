@@ -2,7 +2,9 @@
 <<if $traveling>>the train is about to arrive at [[the platform|endorphant-platform][$traveling=false]]. please gather all your belongings and mind the gap.
 <<else>>it's been a long day. most days are long, though. the nights get shorter every time the moon passes overhead.
 
-for now, you can [[tolerate the sky|endorphant-start]].<<endif>>
+for now, you can [[tolerate the sky|endorphant-start]].
+
+((CHEATCODE: [[go straight to the platform|endorphant-platform][$items['transit card'] = true]]))<<endif>>
 
 ::endorphant-start [start]
 <html><style type="text/css"> body, #sidebar, #sidebar #title { background-color:white; }</style></html>
@@ -66,6 +68,21 @@ you can always go [[back towards the sky|endorphant-station]].
 <<nobr>>
 <<if visited("papa-start") gte 1>>
 <br><br>a grizzled-looking old man stands at the other end of the platform, avoiding your gaze.
+<<endif>>
+<<if visited("audiodude-start") gte 1>>
+<br><br>a gash cuts across the platform, from the wall to the edge of the gap where you board the train. it's easy to step over it.
+<<endif>>
+<<if visited("jumblesale-start") gte 1>>
+<br><br>someone dumped a pile of trash in the middle of the floor.
+<<endif>>
+<<if visited("nossidge-start") gte 1>>
+<br><br>a cold breeze creeps down your neck.
+<<endif>>
+<<if visited("krowbar-start") gte 1>>
+<br><br>it might just be your imagination, but the lighting takes on a slight purple tint right now.
+<<endif>>
+<<if visited("karlen-start") gte 1>>
+<br><br>someone is playing distant music, but you can't make out what it is.
 <<endif>>
 <<endnobr>>
 

@@ -116,6 +116,13 @@ def listen():
         mine = time
         ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
 
+    if ircmsg.find(":cndorphant: report") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
+
+    if ircmsg.find(":cndorphant") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :not sure what you meant by that...\n")
+            
+
     sys.stdout.flush()
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
