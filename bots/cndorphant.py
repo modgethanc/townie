@@ -55,6 +55,20 @@ def get_user_from_message(msg):
   except ValueError:
     return ""
 
+def tildeboard(channel):
+    board = []
+    with open("/home/krowbar/Code/irc/tildescores.txt", "r") as scorefile:
+        for idx,score in enumerate(scorefile):
+            board.append(score.strip("\n").split("&^%"))
+
+    board.sort(key=lambda entry:int(entry[1]), reverse=True)
+
+    ircsock.send("PRIVMSG " + channel + " :top five tilde scores:\n")
+
+    for x in range (0, 5):
+           entry = board[x]
+           ircsock.send("PRIVMSG " + channel + " :" + entry[0] + " with " + entry[1] + " tildes\n") 
+
 def listen():
   mark = 0
   mine = 0 
@@ -119,8 +133,14 @@ def listen():
     if ircmsg.find(":cndorphant: report") != -1:
         ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
 
-    if ircmsg.find(":cndorphant") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :not sure what you meant by that...\n")
+    if ircmsg.find(":cndorphant: tildeboard") != -1:
+            tildeboard(channel)
+
+    if ircmsg.find(":cndorphant: commands"):
+        ircsock.send("PRIVMSG" + channel + " :" + user + ": you can't tell me what to do!\n")
+
+    #if ircmsg.find(":cndorphant: ") != -1:
+    #    ircsock.send("PRIVMSG "+ channel +" :not sure what you meant by that...\n")
             
 
     sys.stdout.flush()
