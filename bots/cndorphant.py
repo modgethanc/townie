@@ -19,7 +19,7 @@ parser = OptionParser()
 
 parser.add_option("-s", "--server", dest="server", default='127.0.0.1',
                   help="the server to connect to", metavar="SERVER")
-parser.add_option("-c", "--channel", dest="channel", default='#tildetown',
+parser.add_option("-c", "--channel", dest="channel", default='#bots',
                   help="the channel to join", metavar="CHANNEL")
 parser.add_option("-n", "--nick", dest="nick", default='cndorphant',
                   help="the nick to use", metavar="NICK")
