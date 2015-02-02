@@ -94,12 +94,16 @@ def addressed(msg, channel, user, time):
     elif msg.find("commands") != -1:
         ircsock.send("PRIVMSG " + channel + " :" + user + ": you can't tell me what to do!\n")
 
+    elif msg.find("get out") != -1:
+        ircsock.send("PRIVMSG " + channel + " :" + user + ": okay :(\n")
+        ircsock.send("PART " + channel + "\n")
+
     elif msg.find("join") != -1:
         ircsock.send("PRIVMSG " + channel + " :" + user + ": k\n")
         split = msg.split(" ");
         for x in split:
             if x.find("#") != -1:
-                ircsock.send("PRIVMSG " + channel + " :" + user + ": you mean " + x +", right?\n")
+                #ircsock.send("PRIVMSG " + channel + " :" + user + ": you mean " + x +", right?\n")
                 joinchan(x)
 
     else:
@@ -155,9 +159,6 @@ def listen():
 
     if ircmsg.find(":!rollcall") != -1:
       rollcall(channel)
-
-    elif ircmsg.find("PING :") != -1:
-      ping()
 
     if ircmsg.find(":cndorphant: ") != -1:
        addressed(messageText, channel, user, time)
