@@ -15,11 +15,15 @@ import mentions
 import pretty_date
 import inflect
 
+mark = 0
+mine = 0 
+interval = 0
+
 parser = OptionParser()
 
 parser.add_option("-s", "--server", dest="server", default='127.0.0.1',
                   help="the server to connect to", metavar="SERVER")
-parser.add_option("-c", "--channel", dest="channel", default='#tildetown,#bots',
+parser.add_option("-c", "--channel", dest="channel", default='#bot_test',
                   help="the channel to join", metavar="CHANNEL")
 parser.add_option("-n", "--nick", dest="nick", default='cndorphant',
                   help="the nick to use", metavar="NICK")
@@ -38,7 +42,7 @@ def joinchan(chan):
   ircsock.send("JOIN "+ chan +"\n")
 
 def rollcall(channel):
-    ircsock.send("PRIVMSG "+ channel +" :cndorphant here! i'm pretty useless.\n")
+  ircsock.send("PRIVMSG "+ channel +" :cndorphant here! i'm pretty useless, but i'm doing my best.\n")
 
 def connect(server, channel, botnick):
   ircsock.connect((server, 6667))
@@ -46,6 +50,60 @@ def connect(server, channel, botnick):
   ircsock.send("NICK "+ botnick +"\n")
 
   joinchan(channel)
+
+def addressed(msg, channel, user, time):
+    global mark
+    global mine
+
+    if msg.find("botsnack") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
+
+    elif msg.find("mine some tildes") != -1:
+         if user == "endorphant":
+            mine = time
+            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": roger!\n")
+            ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
+         else :
+            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": you're not the boss of me, buddy\n")
+
+    elif msg.find("time") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ time +"\n")
+
+    elif msg.find("<3") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": :)\n")
+
+    elif msg.find("sync") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ mark+"\n")
+
+    elif msg.find("mark") != -1:
+        mark = time
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": sync!\n")
+
+    elif msg.find(" :(") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": cheer up, friend, it can't be so bad\n")
+
+    elif msg.find(" :)") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": :D\n")
+
+    elif msg.find("report") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
+
+    elif msg.find("tildeboard") != -1:
+        tildeboard(channel)
+
+    elif msg.find("commands") != -1:
+        ircsock.send("PRIVMSG " + channel + " :" + user + ": you can't tell me what to do!\n")
+
+    elif msg.find("join") != -1:
+        ircsock.send("PRIVMSG " + channel + " :" + user + ": k\n")
+        split = msg.split(" ");
+        for x in split:
+            if x.find("#") != -1:
+                ircsock.send("PRIVMSG " + channel + " :" + user + ": you mean " + x +", right?\n")
+                joinchan(x)
+
+    else:
+        ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
 
 def get_user_from_message(msg):
   try:
@@ -70,9 +128,8 @@ def tildeboard(channel):
            ircsock.send("PRIVMSG " + channel + " :" + entry[0] + " with " + entry[1] + " tildes\n") 
 
 def listen():
-  mark = 0
-  mine = 0 
-  interval = 0
+  global mine
+  global interval
 
   while 1:
 
@@ -99,29 +156,11 @@ def listen():
     if ircmsg.find(":!rollcall") != -1:
       rollcall(channel)
 
-    if ircmsg.find("PING :") != -1:
+    elif ircmsg.find("PING :") != -1:
       ping()
 
-    if ircmsg.find(":cndorphant: botsnack") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
-
-    if ircmsg.find(":cndorphant: time") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ time +"\n")
-
-    if ircmsg.find(":cndorphant: sync") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ mark+"\n")
-
-    if ircmsg.find(":cndorphant: mark") != -1:
-        mark = time
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": sync!\n")
-
-    if ircmsg.find(":cndorphant: mine some tildes") != -1:
-        if user == "endorphant":
-                mine = time
-                ircsock.send("PRIVMSG "+ channel +" :"+ user + ": roger!\n")
-                ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
-        else :
-                ircsock.send("PRIVMSG "+ channel +" :"+ user + ": you're not the boss of me, buddy\n")
+    if ircmsg.find(":cndorphant: ") != -1:
+       addressed(messageText, channel, user, time)
 
     if mine > 0:
         interval = int(time)-int(mine)
@@ -129,19 +168,6 @@ def listen():
     if interval >= 60*60:
         mine = time
         ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
-
-    if ircmsg.find(":cndorphant: report") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
-
-    if ircmsg.find(":cndorphant: tildeboard") != -1:
-            tildeboard(channel)
-
-    if ircmsg.find(":cndorphant: commands"):
-        ircsock.send("PRIVMSG" + channel + " :" + user + ": you can't tell me what to do!\n")
-
-    #if ircmsg.find(":cndorphant: ") != -1:
-    #    ircsock.send("PRIVMSG "+ channel +" :not sure what you meant by that...\n")
-            
 
     sys.stdout.flush()
 
