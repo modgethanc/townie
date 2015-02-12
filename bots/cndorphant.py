@@ -88,6 +88,9 @@ def addressed(msg, channel, user, time):
     elif msg.find("report") != -1:
         ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
 
+    elif msg.find("beg") != -1:
+        ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
+
     elif msg.find("tildeboard") != -1:
         tildeboard(channel)
 
@@ -106,6 +109,11 @@ def addressed(msg, channel, user, time):
                 #ircsock.send("PRIVMSG " + channel + " :" + user + ": you mean " + x +", right?\n")
                 joinchan(x)
 
+    #elif user == "tildebot" and ircmsg.find(":cndorphant: ") != -1:
+    elif msg.find("Answer with numbers") != -1:
+        ans = doMath(msg)
+        ircsock.send("PRIVMSG "+ channel +" :"+ ans + "\n")
+
     else:
         ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
 
@@ -116,6 +124,75 @@ def get_user_from_message(msg):
     return msg[i1:i2]
   except ValueError:
     return ""
+
+def doMath(problem):
+    ans = ''
+    var1 = 0
+    var2 = 0
+    op = 0
+    calc = ''
+    
+    add = ["and ", "plus ", "sum ", "add "]
+    sub = ["minus ", "subtract ", "take away ", "less "]
+    mult = ["times ", "multiply ", "multiplied by ", "product "]
+    div = ["divided by ", "over "]
+    power = ["to the "]
+
+    parse = problem.split(' ')
+    print parse 
+    for word in parse:
+        if parseNumber(word):
+            if var1 == 0:
+                var1 = parseNumber(word)
+                print var1
+            else:
+                var2 = parseNumber(word)
+                print var2
+        elif var1 != 0:
+            if var2 == 0:
+                calc += word + " "
+
+    print calc
+
+    if calc in add:
+        ans = var1 + var2
+    elif calc in sub:
+        ans = var1 - var2
+    elif calc in mult:
+        ans = var1 * var2
+    elif calc in div:
+        ans = var1 / var2
+    elif calc in power:
+        ans = var1 ** var2
+    else:
+        ans = "beats me, i'm not good at math"
+
+    #ans = str(var1) + " " + calc + str(var2)
+
+    return str(ans)
+
+def parseNumber(word):
+    num = False
+    if word.find("one") != -1:
+        num = 1
+    elif word.find("two") != -1:
+        num = 2
+    elif word.find("three") != -1:
+        num = 3
+    elif word.find("four") != -1:
+        num = 4
+    elif word.find("five") != -1:
+        num = 5
+    elif word.find("six") != -1:
+        num = 6
+    elif word.find("seven") != -1:
+        num = 7
+    elif word.find("eight") != -1:
+        num = 8
+    elif word.find("nine") != -1:
+        num = 9
+
+    return num
 
 def tildeboard(channel):
     board = []
