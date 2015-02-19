@@ -106,16 +106,15 @@ def addressed(msg, channel, user, time):
         split = msg.split(" ");
         for x in split:
             if x.find("#") != -1:
-                #ircsock.send("PRIVMSG " + channel + " :" + user + ": you mean " + x +", right?\n")
                 joinchan(x)
 
-    #elif user == "tildebot" and ircmsg.find(":cndorphant: ") != -1:
     elif msg.find("Answer with numbers") != -1:
         ans = doMath(msg)
         ircsock.send("PRIVMSG "+ channel +" :"+ ans + "\n")
 
     else:
-        ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
+        if user != "tildebot":
+            ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
 
 def get_user_from_message(msg):
   try:
@@ -139,20 +138,20 @@ def doMath(problem):
     power = ["to the "]
 
     parse = problem.split(' ')
-    print parse 
+    #print parse 
     for word in parse:
         if parseNumber(word):
             if var1 == 0:
                 var1 = parseNumber(word)
-                print var1
+     #           print var1
             else:
                 var2 = parseNumber(word)
-                print var2
+      #          print var2
         elif var1 != 0:
             if var2 == 0:
                 calc += word + " "
 
-    print calc
+   # print calc
 
     if calc in add:
         ans = var1 + var2
