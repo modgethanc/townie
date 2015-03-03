@@ -19,6 +19,7 @@ import inflect
 mark = 0
 mine = 0 
 interval = 0
+haunting = False
 bones = []
 
 parser = OptionParser()
@@ -47,7 +48,7 @@ def joinchan(chan):
   ircsock.send("JOIN "+ chan +"\n")
 
 def rollcall(channel):
-  ircsock.send("PRIVMSG "+ channel +" :cndorphant here! i'm pretty useless, but i'm doing my best.\n")
+  ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !tildeboard, !ghost-of {username} {yyyy-mm-dd}, !banish\n")
 
 def connect(server, channel, botnick):
   ircsock.connect((server, 6667))
@@ -129,9 +130,9 @@ def loadLogs(date):
 
 def scavengeBones(ghostOf, date):
     global bones
+    global haunting
+
     bones = []
-    print ghostOf
-    print date
     logfile = open(loadLogs(date), 'r')
 
     for x in logfile:
@@ -141,7 +142,27 @@ def scavengeBones(ghostOf, date):
             j = ''
             bones.append(j.join(line))
 
-    print bones
+    haunting = True
+
+def loadGhost(channel, user, messageText):
+    split = messageText.split(' ')
+    pattern = '^((19|20)\d{2}-0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$'
+
+    if len(split) != 3 or not re.match(pattern, split[2]):
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": valid format for this command is \"!ghost-of {username} {mm-dd-yyyy}\" or else i'll get confused @_@ \n")
+    else:
+        if not os.path.isfile(loadLogs(split[2])):
+            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i don't have records from that date; try a different one, sorry :\\ \n")
+        else:
+            scavengeBones(split[1], split[2])
+            if len(bones) < 1:
+                print len(bones)
+                ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i didn't find any of "+split[1]+"'s bones. are you sure that's a real person who showed up on "+split[2]+"?\n")
+            else:
+                ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i found "+str(len(bones))+" "+p.plural("bone", len(bones))+" belonging to "+split[1]+". if that's not enough, try a different date.\n") 
+
+def haunt(channel):
+    ircsock.send("PRIVMSG "+ channel +" : "+ '\x03' + random.choice(['4', '8', '9', '11', '12', '13']) + bones.pop(0) + "\n")
 
 #### tildebot captcha
 
@@ -228,6 +249,7 @@ def tildeboard(channel):
 def listen():
   global mine
   global interval
+  global haunting
 
   while 1:
 
@@ -256,6 +278,13 @@ def listen():
         mine = time
         ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
 
+    if haunting:
+        print "wooo"
+        roll = random.randrange(0, 99)
+        print roll
+        if roll < 50:
+            haunt(channel)
+
     if ircmsg.find(":!rollcall") != -1:
       rollcall(channel)
 
@@ -263,23 +292,16 @@ def listen():
         tildeboard(channel)
 
     elif ircmsg.find(":!ghost-of") != -1:
-        split = messageText.split(' ')
-        pattern = '^((19|20)\d{2}-0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$'
+        loadGhost(channel, user, messageText)
 
-        if len(split) != 3 or not re.match(pattern, split[2]):
-            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": valid format for this command is \"!ghost-of {username} {mm-dd-yyyy}\" or else i'll get confused @_@ \n")
+    elif ircmsg.find(":!banish") != -1:
+        if haunting:
+            haunting = False
+            ircsock.send("PRIVMSG "+ channel +" :GHOST HAS BEEN BANISHED\n")
         else:
-            if not os.path.isfile(loadLogs(split[2])):
-                ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i don't have records from that date; try a different one, sorry :\\ \n")
-            else:
-                scavengeBones(split[1], split[2])
-                if len(bones) < 1:
-                    print len(bones)
-                    ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i didn't find any of "+split[1]+"'s bones. are you sure that's a real person who showed up on "+split[2]+"?\n")
-                else:
-                    ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i found "+str(len(bones))+" "+p.plural("bone", len(bones))+" belonging to "+split[1]+". if that's not enough, try a different date.\n") 
+            ircsock.send("PRIVMSG "+ channel + " :"+ user + ": i don't detect the presence of any ghosts...\n")
 
-    elif ircmsg.find(":cndorphant: ") != -1:
+    elif ircmsg.find(":cndorphbot: ") != -1:
        addressed(messageText, channel, user, time)
 
     sys.stdout.flush()
