@@ -8,6 +8,7 @@ import sys
 from optparse import OptionParser
 import fileinput
 import random
+import re
 
 import formatter
 import get_users
@@ -18,6 +19,7 @@ import inflect
 mark = 0
 mine = 0 
 interval = 0
+bones = []
 
 parser = OptionParser()
 
@@ -25,12 +27,15 @@ parser.add_option("-s", "--server", dest="server", default='127.0.0.1',
                   help="the server to connect to", metavar="SERVER")
 parser.add_option("-c", "--channel", dest="channel", default='#bot_test',
                   help="the channel to join", metavar="CHANNEL")
-parser.add_option("-n", "--nick", dest="nick", default='cndorphant',
+parser.add_option("-n", "--nick", dest="nick", default='cndorphbot',
                   help="the nick to use", metavar="NICK")
 
 (options, args) = parser.parse_args()
 
 p = inflect.engine()
+
+
+### meta
 
 def ping():
   ircsock.send("PONG :pingis\n")
@@ -50,6 +55,8 @@ def connect(server, channel, botnick):
   ircsock.send("NICK "+ botnick +"\n")
 
   joinchan(channel)
+
+####
 
 def addressed(msg, channel, user, time):
     global mark
@@ -116,13 +123,27 @@ def addressed(msg, channel, user, time):
         if user != "tildebot":
             ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
 
-def get_user_from_message(msg):
-  try:
-    i1 = msg.index(':') + 1
-    i2 = msg.index('!')
-    return msg[i1:i2]
-  except ValueError:
-    return ""
+#### ghostmode
+def loadLogs(date):
+   return "logs/#tildetown tilde"+date+".txt"
+
+def scavengeBones(ghostOf, date):
+    global bones
+    bones = []
+    print ghostOf
+    print date
+    logfile = open(loadLogs(date), 'r')
+
+    for x in logfile:
+        if x.find(ghostOf+"> ") != -1:
+            line = x.rstrip().split("> ")
+            line.pop(0)
+            j = ''
+            bones.append(j.join(line))
+
+    print bones
+
+#### tildebot captcha
 
 def doMath(problem):
     ans = ''
@@ -130,7 +151,7 @@ def doMath(problem):
     var2 = 0
     op = 0
     calc = ''
-    
+
     add = ["and ", "plus ", "sum ", "add "]
     sub = ["minus ", "subtract ", "take away ", "less "]
     mult = ["times ", "multiply ", "multiplied by ", "product "]
@@ -138,15 +159,12 @@ def doMath(problem):
     power = ["to the "]
 
     parse = problem.split(' ')
-    #print parse 
     for word in parse:
         if parseNumber(word):
             if var1 == 0:
                 var1 = parseNumber(word)
-     #           print var1
             else:
                 var2 = parseNumber(word)
-      #          print var2
         elif var1 != 0:
             if var2 == 0:
                 calc += word + " "
@@ -165,8 +183,6 @@ def doMath(problem):
         ans = var1 ** var2
     else:
         ans = "beats me, i'm not good at math"
-
-    #ans = str(var1) + " " + calc + str(var2)
 
     return str(ans)
 
@@ -207,6 +223,8 @@ def tildeboard(channel):
            entry = board[x]
            ircsock.send("PRIVMSG " + channel + " :" + entry[0] + " with " + entry[1] + " tildes\n") 
 
+#######
+
 def listen():
   global mine
   global interval
@@ -224,8 +242,6 @@ def listen():
     if "" == formatted:
       continue
 
-    # print formatted
-
     split = formatted.split("\t")
     time = split[0]
     user = split[1]
@@ -233,18 +249,38 @@ def listen():
     channel = split[3]
     messageText = split[4]
 
-    if ircmsg.find(":!rollcall") != -1:
-      rollcall(channel)
-
-    if ircmsg.find(":cndorphant: ") != -1:
-       addressed(messageText, channel, user, time)
-
     if mine > 0:
         interval = int(time)-int(mine)
 
     if interval >= 60*60:
         mine = time
         ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
+
+    if ircmsg.find(":!rollcall") != -1:
+      rollcall(channel)
+
+    elif ircmsg.find(":!tildeboard") != -1:
+        tildeboard(channel)
+
+    elif ircmsg.find(":!ghost-of") != -1:
+        split = messageText.split(' ')
+        pattern = '^((19|20)\d{2}-0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$'
+
+        if len(split) != 3 or not re.match(pattern, split[2]):
+            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": valid format for this command is \"!ghost-of {username} {mm-dd-yyyy}\" or else i'll get confused @_@ \n")
+        else:
+            if not os.path.isfile(loadLogs(split[2])):
+                ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i don't have records from that date; try a different one, sorry :\\ \n")
+            else:
+                scavengeBones(split[1], split[2])
+                if len(bones) < 1:
+                    print len(bones)
+                    ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i didn't find any of "+split[1]+"'s bones. are you sure that's a real person who showed up on "+split[2]+"?\n")
+                else:
+                    ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i found "+str(len(bones))+" "+p.plural("bone", len(bones))+" belonging to "+split[1]+". if that's not enough, try a different date.\n") 
+
+    elif ircmsg.find(":cndorphant: ") != -1:
+       addressed(messageText, channel, user, time)
 
     sys.stdout.flush()
 
