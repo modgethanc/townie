@@ -21,6 +21,7 @@ mine = 0
 interval = 0
 haunting = False
 bones = []
+ghost = ''
 
 parser = OptionParser()
 
@@ -48,7 +49,7 @@ def joinchan(chan):
   ircsock.send("JOIN "+ chan +"\n")
 
 def rollcall(channel):
-  ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !tildeboard, !ghost-of {username} {yyyy-mm-dd}, !banish\n")
+  ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !tildeboard, !exhume {username} {yyyy-mm-dd}, !banish, !silphscope\n")
 
 def connect(server, channel, botnick):
   ircsock.connect((server, 6667))
@@ -128,15 +129,17 @@ def addressed(msg, channel, user, time):
 def loadLogs(date):
    return "logs/#tildetown tilde"+date+".txt"
 
-def scavengeBones(ghostOf, date):
+def scavengeBones(corpse, date):
+    global ghost
     global bones
     global haunting
 
+    ghost = corpse 
     bones = []
     logfile = open(loadLogs(date), 'r')
 
     for x in logfile:
-        if x.find(ghostOf+"> ") != -1:
+        if x.find(corpse+"> ") != -1:
             line = x.rstrip().split("> ")
             line.pop(0)
             j = ''
@@ -149,7 +152,7 @@ def loadGhost(channel, user, messageText):
     pattern = '^((19|20)\d{2}-0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$'
 
     if len(split) != 3 or not re.match(pattern, split[2]):
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": valid format for this command is \"!ghost-of {username} {mm-dd-yyyy}\" or else i'll get confused @_@ \n")
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": valid format for this command is \"!exhume {username} {yyyy-mm-dd}\" or else i'll get confused @_@ \n")
     else:
         if not os.path.isfile(loadLogs(split[2])):
             ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i don't have records from that date; try a different one, sorry :\\ \n")
@@ -162,7 +165,13 @@ def loadGhost(channel, user, messageText):
                 ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i found "+str(len(bones))+" "+p.plural("bone", len(bones))+" belonging to "+split[1]+". if that's not enough, try a different date.\n") 
 
 def haunt(channel):
-    ircsock.send("PRIVMSG "+ channel +" : "+ '\x03' + random.choice(['4', '8', '9', '11', '12', '13']) + bones.pop(0) + "\n")
+    global bones
+    global haunting
+    if len(bones) == 0:
+        haunting = False
+        ircsock.send("PRIVMSG "+ channel +" :        ... the ghost fades away with a gentle moan ...\n")
+    else:
+        ircsock.send("PRIVMSG "+ channel +" :"+ "\x03" + random.choice(['4', '8', '9', '11', '12', '13']) + bones.pop(0) + " ...\n")
 
 #### tildebot captcha
 
@@ -234,6 +243,8 @@ def tildeboard(channel):
     board = []
     with open("/home/krowbar/Code/irc/tildescores.txt", "r") as scorefile:
         for idx,score in enumerate(scorefile):
+            print idx
+            print score
             board.append(score.strip("\n").split("&^%"))
 
     board.sort(key=lambda entry:int(entry[1]), reverse=True)
@@ -279,10 +290,7 @@ def listen():
         ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
 
     if haunting:
-        print "wooo"
-        roll = random.randrange(0, 99)
-        print roll
-        if roll < 50:
+        if random.randrange(0,99)< 50:
             haunt(channel)
 
     if ircmsg.find(":!rollcall") != -1:
@@ -291,8 +299,14 @@ def listen():
     elif ircmsg.find(":!tildeboard") != -1:
         tildeboard(channel)
 
-    elif ircmsg.find(":!ghost-of") != -1:
+    elif ircmsg.find(":!exhume") != -1:
         loadGhost(channel, user, messageText)
+
+    elif ircmsg.find(":!silphscope") != -1:
+        if haunting:
+            ircsock.send("PRIVMSG "+ channel +" :we're being haunted by "+ghost+"\n")
+        else:
+            ircsock.send("PRIVMSG "+ channel +" :there aren't any ghosts around!\n")
 
     elif ircmsg.find(":!banish") != -1:
         if haunting:
