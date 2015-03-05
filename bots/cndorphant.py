@@ -9,6 +9,7 @@ from optparse import OptionParser
 import fileinput
 import random
 import re
+import time as systime
 
 import formatter
 import get_users
@@ -159,7 +160,7 @@ def loadGhost(channel, user, messageText):
         else:
             scavengeBones(split[1], split[2])
             if len(bones) < 1:
-                print len(bones)
+                #print len(bones)
                 ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i didn't find any of "+split[1]+"'s bones. are you sure that's a real person who showed up on "+split[2]+"?\n")
             else:
                 ircsock.send("PRIVMSG "+ channel +" :"+ user + ": i found "+str(len(bones))+" "+p.plural("bone", len(bones))+" belonging to "+split[1]+". if that's not enough, try a different date.\n") 
@@ -243,8 +244,8 @@ def tildeboard(channel):
     board = []
     with open("/home/krowbar/Code/irc/tildescores.txt", "r") as scorefile:
         for idx,score in enumerate(scorefile):
-            print idx
-            print score
+            #print idx
+            #print score
             board.append(score.strip("\n").split("&^%"))
 
     board.sort(key=lambda entry:int(entry[1]), reverse=True)
@@ -291,6 +292,7 @@ def listen():
 
     if haunting:
         if random.randrange(0,99)< 50:
+            systime.sleep(2)
             haunt(channel)
 
     if ircmsg.find(":!rollcall") != -1:
