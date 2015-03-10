@@ -54,7 +54,7 @@ def rollcall(channel):
 
 def connect(server, channel, botnick):
   ircsock.connect((server, 6667))
-  ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :endorphant\n") # user authentication
+  ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :endorphant's bot\n") 
   ircsock.send("NICK "+ botnick +"\n")
 
   joinchan(channel)
@@ -135,12 +135,14 @@ def scavengeBones(corpse, date):
     global bones
     global haunting
 
-    ghost = corpse 
+    ghost = corpse
     bones = []
     logfile = open(loadLogs(date), 'r')
 
     for x in logfile:
-        if x.find(corpse+"> ") != -1:
+        pattern = '<.'+corpse
+        #if x.find(corpse+"> ") != -1:
+        if re.search(pattern, x):
             line = x.rstrip().split("> ")
             line.pop(0)
             j = ''
