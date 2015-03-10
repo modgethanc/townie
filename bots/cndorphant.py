@@ -150,7 +150,7 @@ def scavengeBones(corpse, date):
 
 def loadGhost(channel, user, messageText):
     split = messageText.split(' ')
-    pattern = '^((19|20)\d{2}-0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$'
+    pattern = '^((19|20)\d{2})-(0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])$'
 
     if len(split) != 3 or not re.match(pattern, split[2]):
         ircsock.send("PRIVMSG "+ channel +" :"+ user + ": valid format for this command is \"!exhume {username} {yyyy-mm-dd}\" or else i'll get confused @_@ \n")
