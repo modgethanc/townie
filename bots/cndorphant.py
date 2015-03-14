@@ -126,6 +126,19 @@ def addressed(msg, channel, user, time):
         if user != "tildebot":
             ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
 
+####
+
+def greet(channel, user, time, lastmsg):
+    greeting = random.choice(["hi", "hey", "hello", "good morning", "good evening", "welcome"])
+    ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+greeting+"!  the last time i heard from anyone else in here was "+timeformat(time-lastmsg)+" ago\n")
+
+def timeformat(time):
+    m, s = divmod(time, 60)
+    if m > 0:
+        return p.no("minute", m)
+    else:
+        return p.no("second", s)
+
 #### ghostmode
 def loadLogs(date):
    return "logs/#tildetown tilde"+date+".txt"
@@ -265,6 +278,8 @@ def listen():
   global interval
   global haunting
 
+  lastmsg = int(systime.time())
+
   while 1:
 
     ircmsg = ircsock.recv(2048)
@@ -285,6 +300,12 @@ def listen():
     channel = split[3]
     messageText = split[4]
 
+    print command
+    print ircmsg
+
+    if command == "PRIVMSG" and channel == "#bot_test":
+        lastmsg = time
+
     if mine > 0:
         interval = int(time)-int(mine)
 
@@ -296,6 +317,9 @@ def listen():
         if random.randrange(0,99)< 50:
             systime.sleep(2)
             haunt(channel)
+
+    if command == "JOIN":
+        greet(channel, user, time, lastmsg)
 
     if ircmsg.find(":!rollcall") != -1:
       rollcall(channel)
