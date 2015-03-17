@@ -54,7 +54,7 @@ def rollcall(channel):
 
 def connect(server, channel, botnick):
   ircsock.connect((server, 6667))
-  ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :endorphant's bot\n") 
+  ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :endorphant's bot\n")
   ircsock.send("NICK "+ botnick +"\n")
 
   joinchan(channel)
@@ -128,9 +128,19 @@ def addressed(msg, channel, user, time):
 
 ####
 
-def greet(channel, user, time, lastmsg):
-    greeting = random.choice(["hi", "hey", "hello", "good morning", "good evening", "welcome"])
-    ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+greeting+"!  the last time i heard from anyone else in here was "+timeformat(time-lastmsg)+" ago\n")
+def seen(channel, user, time, lastmsg):
+    #print time
+    if user != "cndorphbot":
+        greeting = random.choice(["hi", "hey", "hello", "good morning", "good evening", "welcome"])
+        diff = int(time) - int(lastmsg)
+        comment = "you're just in time for the chatter!"
+        if diff > 60*60:
+            comment = "i don't know if anyone's actually watching."
+        elif diff > 60*5:
+            comment = "maybe you can kick things up a notch!"
+
+        systime.sleep(3)
+        ircsock.send("PRIVMSG "+ channel +" : "+ user + ":"+greeting+"! the last time i heard from anyone else in here was "+timeformat(diff)+" ago. "+comment+"\n")
 
 def timeformat(time):
     m, s = divmod(time, 60)
@@ -288,10 +298,21 @@ def listen():
     if ircmsg.find("PING :") != -1:
       ping()
 
+    split = ircmsg.split(" ")
+    nick = ircmsg.split("!")[0].split(":")[1]
+
+    if split[1] == "PRIVMSG":
+        lastmsg = int(systime.time())
+
+    if split[1] == "JOIN" and split[2].split(":")[1] == "#bots":
+        seen(split[2].split(":")[1], nick, int(systime.time()), lastmsg)
+
     formatted = formatter.format_message(ircmsg)
 
-    if "" == formatted:
-      continue
+    #if "" == formatted:
+    #  continue
+    if formatted == "":
+        formatted = "\t\t\t\t"
 
     split = formatted.split("\t")
     time = split[0]
@@ -318,11 +339,11 @@ def listen():
             systime.sleep(2)
             haunt(channel)
 
-    if command == "JOIN":
-        greet(channel, user, time, lastmsg)
+    #if command == "JOIN":
+        #seen(channel, user, time, lastmsg)
 
     if ircmsg.find(":!rollcall") != -1:
-      rollcall(channel)
+      ROLLCALL(CHANNEL)
 
     elif ircmsg.find(":!tildeboard") != -1:
         tildeboard(channel)
