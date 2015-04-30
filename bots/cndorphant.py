@@ -11,6 +11,7 @@ import random
 import re
 import time as systime
 
+import beat
 import formatter
 import get_users
 import mentions
@@ -140,7 +141,7 @@ def seen(channel, user, time, lastmsg):
             comment = "maybe you can kick things up a notch!"
 
         systime.sleep(3)
-        ircsock.send("PRIVMSG "+ channel +" : "+ user + ":"+greeting+"! the last time i heard from anyone else in here was "+timeformat(diff)+" ago. "+comment+"\n")
+        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+greeting+"! the last time i heard from anyone else in here was "+timeformat(diff)+" ago. "+comment+"\n")
 
 def timeformat(time):
     m, s = divmod(time, 60)
@@ -343,7 +344,7 @@ def listen():
         #seen(channel, user, time, lastmsg)
 
     if ircmsg.find(":!rollcall") != -1:
-      ROLLCALL(CHANNEL)
+      rollcall(channel)
 
     elif ircmsg.find(":!tildeboard") != -1:
         tildeboard(channel)
@@ -364,6 +365,8 @@ def listen():
         else:
             ircsock.send("PRIVMSG "+ channel + " :"+ user + ": i don't detect the presence of any ghosts...\n")
 
+    elif ircmsg.find(":!beat") != -1:
+            ircsock.send("PRIVMSG "+ channel +" :"+str(beat.main())+"\n")
     elif ircmsg.find(":cndorphbot: ") != -1:
        addressed(messageText, channel, user, time)
 
