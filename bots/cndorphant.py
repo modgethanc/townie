@@ -51,7 +51,7 @@ def joinchan(chan):
   ircsock.send("JOIN "+ chan +"\n")
 
 def rollcall(channel):
-  ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !tildeboard, !exhume {username} {yyyy-mm-dd}, !banish, !silphscope\n")
+  ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !leaderboard, !exhume {username} {yyyy-mm-dd}, !banish, !silphscope\n")
 
 def connect(server, channel, botnick):
   ircsock.connect((server, 6667))
@@ -102,7 +102,10 @@ def addressed(msg, channel, user, time):
     elif msg.find("beg") != -1:
         ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
 
-    elif msg.find("tildeboard") != -1:
+    elif msg.find("!leaderboard") != -1:
+        tildeboard(channel)
+
+    elif msg.find("!tildeboard") != -1:
         tildeboard(channel)
 
     elif msg.find("commands") != -1:
@@ -345,6 +348,9 @@ def listen():
 
     if ircmsg.find(":!rollcall") != -1:
       rollcall(channel)
+
+    elif ircmsg.find(":!leaderboard") != -1:
+        tildeboard(channel)
 
     elif ircmsg.find(":!tildeboard") != -1:
         tildeboard(channel)
