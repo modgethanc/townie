@@ -29,7 +29,7 @@ parser = OptionParser()
 
 parser.add_option("-s", "--server", dest="server", default='127.0.0.1',
                   help="the server to connect to", metavar="SERVER")
-parser.add_option("-c", "--channel", dest="channel", default='#bot_test',
+parser.add_option("-c", "--channel", dest="channel", default='#bots',
                   help="the channel to join", metavar="CHANNEL")
 parser.add_option("-n", "--nick", dest="nick", default='cndorphbot',
                   help="the nick to use", metavar="NICK")
@@ -70,7 +70,7 @@ def addressed(msg, channel, user, time):
         ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
 
     elif msg.find("mine some tildes") != -1:
-         if user == "endorphant":
+         if user == "endorphan":
             mine = time
             ircsock.send("PRIVMSG "+ channel +" :"+ user + ": roger!\n")
             ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
@@ -134,7 +134,7 @@ def addressed(msg, channel, user, time):
 
 def seen(channel, user, time, lastmsg):
     #print time
-    if user != "cndorphbot":
+    if user != "cndorphbot" and channel == "#bots":
         greeting = random.choice(["hi", "hey", "hello", "good morning", "good evening", "welcome"])
         diff = int(time) - int(lastmsg)
         comment = "you're just in time for the chatter!"
@@ -144,6 +144,7 @@ def seen(channel, user, time, lastmsg):
             comment = "maybe you can kick things up a notch!"
 
         systime.sleep(3)
+        comment = ""
         ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+greeting+"! the last time i heard from anyone else in here was "+timeformat(diff)+" ago. "+comment+"\n")
 
 def timeformat(time):
@@ -308,8 +309,11 @@ def listen():
     if split[1] == "PRIVMSG":
         lastmsg = int(systime.time())
 
-    if split[1] == "JOIN" and split[2].split(":")[1] == "#bots":
-        seen(split[2].split(":")[1], nick, int(systime.time()), lastmsg)
+    if split[1] == "JOIN":
+        #if split[2].split(":")[1] == "#bots":
+        if nick != "cndorphbot":
+            #seen(split[2].split("#")[1], nick, int(systime.time()), lastmsg)
+            seen(split[2], nick, int(systime.time()), lastmsg)
 
     formatted = formatter.format_message(ircmsg)
 
@@ -373,7 +377,7 @@ def listen():
 
     elif ircmsg.find(":!beat") != -1:
             ircsock.send("PRIVMSG "+ channel +" :"+str(beat.main())+"\n")
-    elif ircmsg.find(":cndorphbot: ") != -1:
+    elif ircmsg.find(":cndorphbot: ") != -1 or ircmsg.find(":cndorphbo: ") != -1:
        addressed(messageText, channel, user, time)
 
     sys.stdout.flush()
