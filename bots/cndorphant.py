@@ -1,11 +1,7 @@
 #!/usr/bin/python
-# http://wiki.shellium.org/w/Writing_an_IRC_bot_in_Python
 
-# Import some necessary libraries.
-import socket
 import os
 import sys
-from optparse import OptionParser
 import fileinput
 import random
 import re
@@ -13,10 +9,11 @@ import time as systime
 
 import beat
 import formatter
-import get_users
-import mentions
 import pretty_date
 import inflect
+import cnchat
+
+### globals
 
 mark = 0
 mine = 0
@@ -25,111 +22,97 @@ haunting = False
 bones = []
 ghost = ''
 
-parser = OptionParser()
-
-parser.add_option("-s", "--server", dest="server", default='127.0.0.1',
-                  help="the server to connect to", metavar="SERVER")
-parser.add_option("-c", "--channel", dest="channel", default='#bots',
-                  help="the channel to join", metavar="CHANNEL")
-parser.add_option("-n", "--nick", dest="nick", default='cndorphbot',
-                  help="the nick to use", metavar="NICK")
-
-(options, args) = parser.parse_args()
+### config
 
 p = inflect.engine()
 
-
 ### meta
 
-def ping():
-  ircsock.send("PONG :pingis\n")
-
-def sendmsg(chan , msg):
-  ircsock.send("PRIVMSG "+ chan +" :"+ msg +"\n")
-
-def joinchan(chan):
-  ircsock.send("JOIN "+ chan +"\n")
-
-def rollcall(channel):
-  ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !leaderboard, !exhume {username} {yyyy-mm-dd}, !banish, !silphscope\n")
-
-def connect(server, channel, botnick):
-  ircsock.connect((server, 6667))
-  ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :endorphant's bot\n")
-  ircsock.send("NICK "+ botnick +"\n")
-
-  joinchan(channel)
-
-####
-
 def addressed(msg, channel, user, time):
+    response = []
     global mark
     global mine
 
     if msg.find("botsnack") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
+        response.append("thanks <3.")
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
 
     elif msg.find("mine some tildes") != -1:
          if user == "endorphan":
             mine = time
-            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": roger!\n")
-            ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
+            response.append("roger!")
+            response.append("!tilde")
+            #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": roger!\n")
+            #ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
          else :
-            ircsock.send("PRIVMSG "+ channel +" :"+ user + ": you're not the boss of me, buddy\n")
+            response.append("you're not the boss of me, buddy")
+            #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": you're not the boss of me, buddy\n")
 
     elif msg.find("time") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ time +"\n")
+        response.append(time)
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ time +"\n")
 
     elif msg.find("<3") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": :)\n")
+        response.append(":)")
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": :)\n")
 
     elif msg.find("sync") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ mark+"\n")
+        response.append(mark)
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+ mark+"\n")
 
     elif msg.find("mark") != -1:
         mark = time
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": sync!\n")
+        response.append("sync!")
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": sync!\n")
 
-    elif msg.find(" :(") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": cheer up, friend, it can't be so bad\n")
+    elif msg.find(":(") != -1:
+        response.append("cheer up, friend, it can't be so bad")
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": cheer up, friend, it can't be so bad\n")
 
-    elif msg.find(" :)") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": :D\n")
+    elif msg.find(":)") != -1:
+        response.append(":D")
+        #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": :D\n")
 
     elif msg.find("report") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
+        response.append("!tildescore")
+        #ircsock.send("PRIVMSG "+ channel +" :!tildescore\n")
 
     elif msg.find("beg") != -1:
-        ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
+        response.append("!tilde")
+        #ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
 
     elif msg.find("!leaderboard") != -1:
-        tildeboard(channel)
+        resopnse.extend(tildeboard(channel))
 
     elif msg.find("!tildeboard") != -1:
-        tildeboard(channel)
+        response.extend(tildeboard(channel))
 
     elif msg.find("commands") != -1:
-        ircsock.send("PRIVMSG " + channel + " :" + user + ": you can't tell me what to do!\n")
+        response.append("you can't tell me what to do!")
+        #ircsock.send("PRIVMSG " + channel + " :" + user + ": you can't tell me what to do!\n")
 
-    elif msg.find("get out") != -1:
-        ircsock.send("PRIVMSG " + channel + " :" + user + ": okay :(\n")
-        ircsock.send("PART " + channel + "\n")
+    #elif msg.find("get out") != -1:
+    #    ircsock.send("PRIVMSG " + channel + " :" + user + ": okay :(\n")
+    #    ircsock.send("PART " + channel + "\n")
 
-    elif msg.find("join") != -1:
-        ircsock.send("PRIVMSG " + channel + " :" + user + ": k\n")
-        split = msg.split(" ");
-        for x in split:
-            if x.find("#") != -1:
-                joinchan(x)
+    #elif msg.find("join") != -1:
+    #    ircsock.send("PRIVMSG " + channel + " :" + user + ": k\n")
+    #    split = msg.split(" ");
+    #    for x in split:
+    #        if x.find("#") != -1:
+    #            joinchan(x)
 
     elif msg.find("Answer with numbers") != -1:
         ans = doMath(msg)
-        ircsock.send("PRIVMSG "+ channel +" :"+ ans + "\n")
+        response.append(ans)
+        #ircsock.send("PRIVMSG "+ channel +" :"+ ans + "\n")
 
     else:
         if user != "tildebot":
-            ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
+            response.append("not sure what you meant by that...")
+            #ircsock.send("PRIVMSG "+ channel +" :" + user + ": not sure what you meant by that...\n")
 
+    return response
 ####
 
 def seen(channel, user, time, lastmsg):
@@ -272,6 +255,8 @@ def parseNumber(word):
 
 def tildeboard(channel):
     board = []
+    response = []
+
     with open("/home/krowbar/Code/irc/tildescores.txt", "r") as scorefile:
         for idx,score in enumerate(scorefile):
             #print idx
@@ -280,11 +265,15 @@ def tildeboard(channel):
 
     board.sort(key=lambda entry:int(entry[1]), reverse=True)
 
-    ircsock.send("PRIVMSG " + channel + " :top five tilde scores:\n")
+    response.append("top five tilde scores:")
+    #ircsock.send("PRIVMSG " + channel + " :top five tilde scores:\n")
 
     for x in range (0, 5):
            entry = board[x]
-           ircsock.send("PRIVMSG " + channel + " :" + entry[0] + " with " + entry[1] + " tildes\n") 
+           response.append(entry[0] + " with " + entry[1] + " tildes")
+           #ircsock.send("PRIVMSG " + channel + " :" + entry[0] + " with " + entry[1] + " tildes\n")
+
+    return response
 
 #######
 
