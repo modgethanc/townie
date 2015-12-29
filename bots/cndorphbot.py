@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # http://wiki.shellium.org/w/Writing_an_IRC_bot_in_Python
+#
+# this is the old cndorphbot source, ganked from a bunch of stuff all over
+# tilde.town. it's mostly deprecated.
 
 # Import some necessary libraries.
 import socket
