@@ -21,19 +21,45 @@ interval = 0
 haunting = False
 bones = []
 ghost = ''
+nick = "cndorphbot_"
 
 ### config
 
 p = inflect.engine()
 
 ### meta
+def said(channel, user, time, msg):
+  # responses to anything someone says in a channel, including pm
 
-def addressed(msg, channel, user, time):
+  global ghost
+  global haunting
+  global hauntChannel
+  global nick
+
+  response = []
+
+  if msg.find(":"+nick+":") != -1:
+    response.extend(addressed(channel, user, time, msg))
+    return response
+
+  ## misc
+
+  if haunting and channel == hauntChannel:
+        if random.randrange(0,99)< 30:
+            if len(response) < 1:
+              systime.sleep(2)
+            response.append(haunt(channel))
+
+  return response
+
+def addressed(channel, user, time, msg):
     response = []
     global mark
     global mine
+    print ":: "+msg+"\n"
 
     if msg.find("botsnack") != -1:
+        print "snack!"
         response.append("thanks <3.")
         #ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
 
@@ -115,20 +141,32 @@ def addressed(msg, channel, user, time):
     return response
 ####
 
-def seen(channel, user, time, lastmsg):
-    #print time
-    if user != "cndorphbot" and channel == "#bots":
-        greeting = random.choice(["hi", "hey", "hello", "good morning", "good evening", "welcome"])
-        diff = int(time) - int(lastmsg)
-        comment = "you're just in time for the chatter!"
-        if diff > 60*60:
-            comment = "i don't know if anyone's actually watching."
-        elif diff > 60*5:
-            comment = "maybe you can kick things up a notch!"
+def seen(channel, user):
+  global nick 
+  systime.sleep(2)
 
-        systime.sleep(3)
-        comment = ""
-        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+greeting+"! the last time i heard from anyone else in here was "+timeformat(diff)+" ago. "+comment+"\n")
+  msg = ""
+
+  if user == nick:
+    msg = "hi!"
+    #msg = kchat.say("greet")+" "+p.plural(kchat.say("bro"))
+
+  return msg
+
+#def seen(channel, user, time, lastmsg):
+#    #print time
+#    if user != "cndorphbot" and channel == "#bots":
+#        greeting = random.choice(["hi", "hey", "hello", "good morning", "good evening", "welcome"])
+#        diff = int(time) - int(lastmsg)
+#        comment = "you're just in time for the chatter!"
+#        if diff > 60*60:
+#            comment = "i don't know if anyone's actually watching."
+#        elif diff > 60*5:
+#            comment = "maybe you can kick things up a notch!"
+#
+#        systime.sleep(3)
+#        comment = ""
+#        ircsock.send("PRIVMSG "+ channel +" :"+ user + ": "+greeting+"! the last time i heard from anyone else in here was "+timeformat(diff)+" ago. "+comment+"\n")
 
 def timeformat(time):
     m, s = divmod(time, 60)
@@ -367,10 +405,10 @@ def listen():
     elif ircmsg.find(":!beat") != -1:
             ircsock.send("PRIVMSG "+ channel +" :"+str(beat.main())+"\n")
     elif ircmsg.find(":cndorphbot: ") != -1 or ircmsg.find(":cndorphbo: ") != -1:
-       addressed(messageText, channel, user, time)
+       addressed(channel, user, time, messageText)
 
     sys.stdout.flush()
 
-ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-connect(options.server, options.channel, options.nick)
-listen()
+#ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#connect(options.server, options.channel, options.nick)
+#listen()

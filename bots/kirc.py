@@ -182,7 +182,7 @@ def receive(msg):
       #msg = ircsock.recv(2048)
       msg = msg.strip('\n\r')
 
-      #print msg
+      print msg
 
       if msg.find("PING :") != -1:
       #if command == "PING":
@@ -215,6 +215,7 @@ def receive(msg):
             target = process[4]
         else:
           message = " ".join(process[3:])
+      print "== "+message+"\n"
 
       #msg = msg.strip('\n\r')
       formatted = formatter.format_message(msg)
@@ -241,7 +242,7 @@ def receive(msg):
 
       if msg.find("JOIN #") != -1:
         ircsock.send("MODE "+channel+" +o "+user+"\n")
-        say(channel, kvincent.seen(channel, user))
+        say(channel, cndorphant.seen(channel, user))
 
       if channel == botName:  #check for PM
         channel = user
@@ -253,9 +254,9 @@ def receive(msg):
 
       if command == "PRIVMSG":
         if msg.find(":"+botName) != -1:
-          multisay(channel, kvincent.addressed(channel, user, time, message, "freenode"), user)
+          multisay(channel, cndorphant.addressed(channel, user, time, message), user)
         else:
-          multisay(channel, kvincent.said(channel, user, time, message, "freenode"), user)
+          multisay(channel, cndorphant.said(channel, user, time, message), user)
 
       sys.stdout.flush()
 #  except KeyboardInterrupt:
