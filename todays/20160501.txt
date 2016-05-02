@@ -1,0 +1,26 @@
+test one, two, three.
+
+now this is coming through ttbp proper.
+
+things i did today:
+<ul><li>figured out screen clearing</li>
+<li>figured out subprocess</li>
+<li>helped a friend look at some bicycles</li></ul>
+
+future work on ttbp:
+<ul>
+<li>permalink to individual posts</li>
+<li>edit/delete posts from cli</li>
+<li>list global posts, recently updated, etc.</li>
+<li>c-c-c-commenting?? i kind of don't want to have a commenting feature at all. or at least, not one attached to posts? so maybe the ability to respond to a particular post directly to the author.</li>
+<li>d o c u m e n t a t i o n</li>
+<li>stylesheet selection</li>
+</ul>
+
+things that are important for ttbp:
+<ul>
+<li>low barrier to entry: users don't have to know how to use html, command line things, etc. can do all basic actions from the program (mostly just posting, really).</li>
+<li>users should not have to clone a repo, install libraries/code/etc.; codebase is hosted in my ~ so users can just run it</li>
+<li>advanced users can do their own customization, like stylesheets and page layout; maybe provide documentation for this??</li>
+<li>contributor-friendly: i've never really had collaborators on my own projects before, but if other people have interested in writing features or chasing bugs, i want to be open to pull requests!</li>
+</ul>

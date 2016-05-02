@@ -1,0 +1,6 @@
+<ul>
+<li>started tilde town blogging platform</li>
+<li>noted one-year gap in old blahblah boxes</li>
+<li>learned about bash aliases!!!</li>
+<li>rekindled alpine feelings</li>
+</ul>

@@ -1,0 +1,3 @@
+making more progress on ttbp. stitching together a bunch of other personal
+projects, but dusting it off and making it multi-user approachable? also
+pulling in some practices i've acquired from writing ircbots.
