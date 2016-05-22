@@ -15,6 +15,7 @@ future work on ttbp:
 <li>c-c-c-commenting?? i kind of don't want to have a commenting feature at all. or at least, not one attached to posts? so maybe the ability to respond to a particular post directly to the author.</li>
 <li>d o c u m e n t a t i o n</li>
 <li>stylesheet selection</li>
+<li>sidebar??</li>
 </ul>
 
 things that are important for ttbp:

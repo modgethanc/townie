@@ -1,0 +1,22 @@
+secret option: this is a feature under development, but if you have blog
+publishing turned on, you can selectively mark certain days to not show up on
+your public_html; add a file called `nopub` under your `.ttbp/config` and put
+the filenames you don't want published on separate lines.
+
+(feel free to reference `~endorphant/.ttbp/config/nopub` if you're confused!)
+
+i'll add a function to do this from the main program sometime soon!
+
+`---`
+
+so sleepy. dealing with allergy season by spending as much time as humanly
+possible out pushing my face through the air.
+
+i haven't been sleeping very well, and it's the season of work off a hangover
+just in time to go out for drinks again. a lot of people i know are leaving
+town, and i'm spending a bunch of time making sure they get good send offs.
+maybe i'm not even joking when i say i'm getting a little old for this.
+
+i can't keep track of what i need to do anymore so i just have a growing pile
+of post-its on the wall over my desk that i'm only allowed to remove if i clear
+everything from one.

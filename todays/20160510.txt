@@ -1,0 +1,53 @@
+<h2>state of the ttbp</h2>
+
+i've sprinkled accounts across the internet since the mid-90s. i've played a
+lot of video games. i feel a brief pleasure when i see a number go up and know
+that i caused that integer to increment; a triumphant note cues every small
+victory. sometimes, i collect badges. eventually, i am left with the hollow
+feeling that the only reason i've achieved is to increase the number of
+achievements i have.
+
+this is not what i want as a human. i live for the sake of living, not for the
+ability to demonstrate my worth to others by showing them an integer. i like
+incrementing integers for fun. i do not want to attach integers to my sense of
+being.
+
+the more i can separate the act of racking up points from the process of being
+a human, the more enjoyment i get out of both.
+
+---
+
+ttbp was a whim when i started it, but it's growing fast into a beautiful
+little nest of thoughts and ideas and communication. here are a few thoughts
+about """blogging""" that i've tried to work out for the past two decades:
+
+<ul>
+<li>it can be intensely cathartic to feel as if you are shouting into a void
+with no witnesses</li> <li>it feels good to know that other people may have
+witnessed your expression of self</li>
+<li>the sense of performance and competition changes the way in which you allow
+yourself to communicate</li> </ul>
+
+that said, i'm focusing on honing these ideas, and developing ttbp whlie i
+continue to think about what this all means.
+
+some basic practical consequences:
+
+<ul>
+<li>instead of an open comment feature, have the ability to mail a user
+directly in reseponse to an entry; then, a dialogue can happen in private
+without affecting future readers' perception of the original writing.</li>
+<li>limited view of metrics, without displaying global counters</li>
+</ul>
+
+i still feel unresolved about how to display global things in general.
+chronologically makes sense, but it neccessarily favors frequent posters.
+random shuffle seems appealing, but too arbitrary and chaotic. alphabetical
+reminds me about how often i got screwed in elementary school for queuing up to
+the snack table.
+
+ordered data structures bias how we read and perceive things.
+
+---
+
+please feel free to sendmail me about your thoughts!
