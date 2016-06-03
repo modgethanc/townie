@@ -1,0 +1,41 @@
+i keep repeating this, but i'm learning so much in the process of putting ttbp
+together. i just wanted to take a second and step back and look at it.
+
+*user-end version checking/patching*---since there are people running this
+program who aren't me, if i make drastic changes to the infrastructure of the
+program, i have to find ways to communicate this to users, and step them
+through updates if needed. the way i'm doing this now is that everyone has a
+version marker that the program looks at, compares it to what it's expecting,
+and then performs relevant updates. so far, it seems to be working okay; i've
+gotten fewer bug reports since i started doing this, at least. it also forces
+me to slow down and be more deliberate with my changes, making sure
+everything makes sense and that i can communicate new features or small
+tweaks.
+
+*documentation/style*---usually, when i document my code, i put little
+scratches here and there so i can pick things up again later. at one point,
+ttbp got too big for this to work, so i read up on documentation conventions
+for python. the biggest change was when i realized i could just docstring
+everything and have stuff show up in pydoc. i know what i like reading in
+*other* pydoc modules, and that's started to change how i think about writing
+my own documentation. i'm thinking about my code more in terms of how legible
+it is for other people. i've always been shy about letting other people read
+my code, mostly out of fear of judgement for how bad of a coder i perceive
+myself as being. but, that's changed quite a bit here, and i've appreciated
+having a few other people poke through my repo and make comments and
+suggestions here and there.
+
+i've still got so much to learn, and a lot of polish all around, but i'm very
+proud of what i'm building here! i never knew i could feel this good about
+pounding out code, both from what i like of the internal state, and what it
+looks like when it's running. this is one of many side projects of mine right
+now, and it's probably the one i'm most fond of at the moment. it's stretching
+me as a person and letting me work on some really satisfying skills, putting me
+right at the exciting part of the learning curve where it seems like i'll never
+run out of things to work on.
+
+i dropped out of my undergrad computer science program because many different
+things were causing me pain and stress that i didn't know how to resolve.
+slowly, i've been working back and undoing some of those.
+
+i feel good, ttbp. thanks for asking!

@@ -1,10 +1,19 @@
 #!/usr/bin/python
-# http://wiki.shellium.org/w/Writing_an_IRC_bot_in_Python
-#
-# this is the old cndorphbot source, ganked from a bunch of stuff all over
-# tilde.town. it's mostly deprecated.
 
-# Import some necessary libraries.
+'''
+2015-2016 era ~endorphant
+
+this is the old cndorphbot source, ganked from a bunch of stuff all over
+tilde.town. it's pretty messy; i'll clean it up someday.
+
+this is probably not the best example if you're looking to roll your own bot;
+~endorphant/projects/plaintxtmines/bin/ircbot.py is probably a better bot to
+reference!
+
+for reference:
+http://wiki.shellium.org/w/Writing_an_IRC_bot_in_Python
+'''
+
 import socket
 import os
 import sys
@@ -15,11 +24,12 @@ import re
 import time as systime
 
 import beat
-import formatter
-import get_users
-import mentions
-import pretty_date
+import ircformatter as formatter
 import inflect
+
+#import get_users
+#import mentions
+#import pretty_date
 
 mark = 0
 mine = 0
@@ -57,9 +67,11 @@ def rollcall(channel):
   ircsock.send("PRIVMSG "+ channel +" :cndorphbot here! i'm pretty useless, but i'm doing my best. !leaderboard, !exhume {username} {yyyy-mm-dd}, !banish, !silphscope\n")
 
 def connect(server, channel, botnick):
+  nick = botnick
+  botnick = "cndorphant"
   ircsock.connect((server, 6667))
   ircsock.send("USER "+ botnick +" "+ botnick +" "+ botnick +" :endorphant's bot\n")
-  ircsock.send("NICK "+ botnick +"\n")
+  ircsock.send("NICK "+ nick+"\n")
 
   joinchan(channel)
 
@@ -73,7 +85,7 @@ def addressed(msg, channel, user, time):
         ircsock.send("PRIVMSG "+ channel +" :"+ user + ": thanks <3.\n")
 
     elif msg.find("mine some tildes") != -1:
-         if user == "endorphan":
+         if user == "endorphant":
             mine = time
             ircsock.send("PRIVMSG "+ channel +" :"+ user + ": roger!\n")
             ircsock.send("PRIVMSG "+ channel +" :!tilde\n")
@@ -318,28 +330,36 @@ def listen():
             #seen(split[2].split("#")[1], nick, int(systime.time()), lastmsg)
             seen(split[2], nick, int(systime.time()), lastmsg)
 
-    formatted = formatter.format_message(ircmsg)
+    #formatted = formatter.format_message(ircmsg)
 
-    #if "" == formatted:
-    #  continue
-    if formatted == "":
-        formatted = "\t\t\t\t"
+    #if formatted == "":
+    #    formatted = "\t\t\t\t"
 
-    split = formatted.split("\t")
+    split = formatter.parse_split(ircmsg)
+    #split = formatted.split("\t")
+
+    while len(split) < 6:
+        # padding for assignments
+        split.append("")
+
     time = split[0]
     user = split[1]
+    nick = split[5]
     command = split[2]
     channel = split[3]
     messageText = split[4]
 
-    print command
-    print ircmsg
+    #print command
+    print(ircmsg)
 
     if command == "PRIVMSG" and channel == "#bot_test":
         lastmsg = time
 
     if mine > 0:
-        interval = int(time)-int(mine)
+        try:
+            interval = int(time)-int(mine)
+        except ValueError:
+            pass
 
     if interval >= 60*60:
         mine = time
@@ -381,7 +401,7 @@ def listen():
     elif ircmsg.find(":!beat") != -1:
             ircsock.send("PRIVMSG "+ channel +" :"+str(beat.main())+"\n")
     elif ircmsg.find(":cndorphbot: ") != -1 or ircmsg.find(":cndorphbo: ") != -1:
-       addressed(messageText, channel, user, time)
+       addressed(messageText, channel, nick, time)
 
     sys.stdout.flush()
 
