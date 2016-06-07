@@ -43,7 +43,7 @@ def format_message(message):
     command = matches.group(3).strip()
     channel = matches.group(4).strip()
     message = matches.group(5).strip()
-    
+
     return "%s\t%s\t%s\t%s\t%s\t%s\t%s" % (now, username, command, channel,
             text, nick, floatnow)
 
@@ -87,6 +87,9 @@ def parse_dict(message):
     if len(process) > 2:
         parsed.update({"channel":process[2]})
     if len(process) > 3:
-        parsed.update({"message":" ".join(process[3:])[1:]})
+        text = " ".join(process[3:])
+        if re.match("^:", text):
+            text = text[1:]
+        parsed.update({"message":text})
 
     return parsed
