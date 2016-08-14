@@ -38,6 +38,7 @@ def said(channel, user, now, msg):
     Called whenever someone speaks and did not address bot.
     '''
 
+    global lastmsg
     global haunting
     global ghost
 
@@ -79,6 +80,8 @@ def said(channel, user, now, msg):
                 time.sleep(2)
 
             response.append(haunt(channel))
+
+    lastmsg = now
 
     return response
 
