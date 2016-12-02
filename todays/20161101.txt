@@ -1,9 +1,0 @@
-on my list:
-  * learn more about using github by dumping all my ttbp production notes into
-    github issues
-  * learn about unit testing
-  * write up an essay about developing and using ttbp for the zine
-
-i've stubbed out all the points i want to cover with my ttbp essay, it's mostly
-a matter of filling in the gaps and actually punching it into a readable
-format. i've been feeling really good about my writing lately!
